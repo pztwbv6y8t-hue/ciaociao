@@ -39,7 +39,9 @@
     const el = document.createElement('div');
     el.id = 'rv';
     el.innerHTML = '<div class="rvbox">' +
-      '<div class="rvtitle">' + nm(j) + 'が「嘘だ！」<br>' + nm(r) + 'の宣言：<b>' + h.declared + '</b></div>' +
+    
+      '<div class="rvtitle">' + (j ? nm(j) + (h.accused ? 'が「嘘だ！」' : 'は「疑わない」') : '判定者なし') + '<br>' + nm(r) + 'の宣言：<b>' + h.declared + '</b></div>' +
+
       '<div class="stage"><div class="rslot"></div><div class="cup"></div><div class="cw"></div></div>' +
       '<div class="rvinfo"></div><div class="rvhint"></div></div>';
     document.body.appendChild(el);
@@ -56,9 +58,12 @@
     T(() => { cw.innerHTML = '<div class="cnt">1</div>'; }, 2300);
     T(() => { cw.innerHTML = ''; slot.innerHTML = dieHtml(h.face); cup.classList.add('lift'); }, 3300);
     T(() => {
-      const lie = h.result === 'lie';
+      const lie = h.face === 'X' || String(h.declared) !== String(h.face);
+
       info.innerHTML = nm(r) + 'の宣言「' + h.declared + '」→ 実際は <b>' + (h.face === 'X' ? '×' : h.face) + '</b><br>' +
-        '<b class="' + (lie ? 'lie' : 'truth') + '">' + (lie ? '嘘でした！' : '本当でした！') + '</b>';
+      
+        '<b class="' + (lie ? 'lie' : 'truth') + '">' + (h.accused ? (lie ? '嘘でした！' : '本当でした！') : (lie ? '嘘でした（見逃し）' : '本当でした')) + '</b>';
+
       hint.textContent = 'タップで閉じる';
       done = true;
     }, 4300);
