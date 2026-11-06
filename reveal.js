@@ -70,7 +70,7 @@
     T(close, 11000);
   }
 
-  function check() {
+    function check() {
     if (!room) return;
     const hist = (room.state || {}).history || [];
     const last = hist[hist.length - 1];
@@ -78,10 +78,13 @@
     if (!last) { seen = 0; return; }
     if (last.turn <= seen) return;
     seen = last.turn;
-    
     if (last.face && !playing) play(last);
+  }
 
-　}
+  const baseRender = render;
+  render = function () { baseRender(); check(); };
+})();
+
   
   const baseRender = render;
   render = function () { baseRender(); check(); };
