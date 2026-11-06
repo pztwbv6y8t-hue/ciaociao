@@ -73,8 +73,9 @@
     if (!last) { seen = 0; return; }
     if (last.turn <= seen) return;
     seen = last.turn;
-    if (last.accused && last.face && !playing) play(last);
-  }
+    
+    if (last.face && !playing) play(last);
+
 
   const baseRender = render;
   render = function () { baseRender(); check(); };
