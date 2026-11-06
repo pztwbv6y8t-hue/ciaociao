@@ -81,7 +81,8 @@
     
     if (last.face && !playing) play(last);
 
-
+　}
+  
   const baseRender = render;
   render = function () { baseRender(); check(); };
 })();
