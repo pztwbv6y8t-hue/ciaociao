@@ -62,7 +62,7 @@
 
       info.innerHTML = nm(r) + 'の宣言「' + h.declared + '」→ 本当は <b>' + (h.face === 'X' ? '×' : h.face) + '</b><br>' +
       
-        '<b class="' + (lie ? 'lie' : 'truth') + '">' + (h.accused ? (lie ? '嘘！' : '本当！') : (lie ? '嘘（見逃し）' : '本当')) + '</b>';
+        '<b class="' + (lie ? 'lie' : 'truth') + '">' + (h.accused ? (lie ? '嘘' : '本当！') : (lie ? '嘘（見逃し）' : '本当')) + '</b>';
 
       hint.textContent = 'タップで閉じる';
       done = true;
