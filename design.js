@@ -30,23 +30,27 @@ button.lie{background:#b3392f}
 
 /* スコアボード */
 .cc-score{display:flex;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px #0002}
-.cc-tn{background:#2b3640;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 10px;min-width:54px}
+.cc-tn{background:#2b3640;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 8px;min-width:46px}
 .cc-tn small{font-size:10px;opacity:.7;letter-spacing:1.5px}
 .cc-tn b{font-size:28px;line-height:1.05}
 .cc-rows{flex:1;min-width:0}
-.cc-r{display:grid;grid-template-columns:16px minmax(0,1fr) 22px 58px 40px 26px;align-items:center;gap:4px;padding:5px 8px;font-size:13px;border-bottom:1px solid #e6ebef}
+.cc-r{display:grid;grid-template-columns:12px minmax(0,1fr) 18px 42px 26px 36px 24px;align-items:center;gap:3px;padding:5px 6px;font-size:13px;border-bottom:1px solid #e6ebef}
 .cc-r:last-child{border-bottom:0}
-.cc-r.hd{font-size:10px;color:#8a949c;padding:3px 8px;background:#f3f6f8;letter-spacing:.5px}
+.cc-r.hd{font-size:10px;color:#8a949c;padding:3px 6px;background:#f3f6f8;letter-spacing:.5px}
 .cc-r.hd span:nth-child(n+3){text-align:center}
 .cc-r.turn{background:#fff3cf;box-shadow:inset 4px 0 0 var(--c)}
 .cc-r .mk{font-size:11px;color:#b5651d}
 .cc-r .nmx{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cc-r .nmx .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:5px}
-.cc-r .nmx em{font-style:normal;font-size:9px;background:#33424d;color:#fff;border-radius:6px;padding:1px 4px;margin-left:4px;vertical-align:1px}
+.cc-r .nmx .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:4px}
+.cc-r .nmx em{font-style:normal;font-size:8px;background:#33424d;color:#fff;border-radius:5px;padding:1px 3px;margin-left:3px;vertical-align:1px}
 .cc-r .ps{text-align:center;font-weight:700}
 .cc-r .pp{display:flex;gap:2px;justify-content:center}
-.cc-r .pp i{width:6px;height:11px;border-radius:3px;background:#dfe5e9}
+.cc-r .pp i{width:4px;height:11px;border-radius:2px;background:#dfe5e9}
 .cc-r .pp i.on{background:var(--c)}
+.cc-r .fl{display:flex;gap:2px;justify-content:center}
+.cc-r .fl i{width:6px;height:6px;border-radius:50%;border:1.5px solid #c3ccd2;box-sizing:border-box}
+.cc-r .fl i.on{background:#b3392f;border-color:#b3392f}
+.cc-r.out{opacity:.55}
 .cc-r .cr{text-align:center;font-size:12px;letter-spacing:-1px}
 .cc-r .pt{text-align:center;font-weight:900;font-size:15px;border-radius:6px}
 .cc-r .pt.lead{background:#f5c542}
@@ -253,20 +257,22 @@ button.lie{background:#b3392f}
     const rows = players.map((p, i) => {
       const turn = playing && st.turn_seat === p.seat;
       const judge = playing && st.phase === 'judge' && st.judge_seat === p.seat;
-      let pips = '';
+      let pips = '', fl = '';
       for (let k = 0; k < 7; k++) pips += '<i' + (k < remain(p) ? ' class="on"' : '') + '></i>';
-      return '<div class="cc-r' + (turn ? ' turn' : '') + '" style="--c:' + COL[p.color] + '">' +
+      for (let k = 0; k < 3; k++) fl += '<i' + (k < (p.falls || 0) ? ' class="on"' : '') + '></i>';
+      return '<div class="cc-r' + (turn ? ' turn' : '') + ((p.falls || 0) >= 3 ? ' out' : '') + '" style="--c:' + COL[p.color] + '">' +
         '<span class="mk">' + (turn ? '▶' : judge ? '⚖' : '') + '</span>' +
         '<span class="nmx"><i class="dot"></i>' + esc(p.name) + (me && me.seat === p.seat ? '<em>YOU</em>' : '') + '</span>' +
         '<span class="ps">' + (p.pos === null ? '–' : p.pos) + '</span>' +
         '<span class="pp">' + pips + '</span>' +
+        '<span class="fl">' + fl + '</span>' +
         '<span class="cr">' + ((p.ranks || []).map(r => NUM[r - 1] || r).join('') || '–') + '</span>' +
         '<span class="pt' + (sc[i] === lead ? ' lead' : '') + '">' + sc[i] + '</span></div>';
     }).join('');
     const hist = st.history || [];
     const last = hist[hist.length - 1];
     return '<div class="cc-score"><div class="cc-tn"><small>TURN</small><b>' + (st.turn_no || 1) + '</b></div>' +
-      '<div class="cc-rows"><div class="cc-r hd"><span></span><span>PLAYER</span><span>橋</span><span>残り</span><span>渡った</span><span>点</span></div>' + rows + '</div></div>' +
+      '<div class="cc-rows"><div class="cc-r hd"><span></span><span>名前</span><span>橋</span><span>残り</span><span>落</span><span>渡った</span><span>点</span></div>' + rows + '</div></div>' +
       '<div class="cc-ev">' + (last ? evt(last) : 'ゲーム開始！ 手番の人がダイスを振ります') + '</div>';
   }
 
