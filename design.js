@@ -128,6 +128,7 @@ button.lie{background:#b3392f}
 .cc-judge{margin:8px 0 2px;font-size:14px}
 .cc-title{font-weight:900;font-size:16px;margin-bottom:6px}
 .cc-vote{font-size:14px;line-height:1.8}
+.cc-rank{margin-top:10px;text-align:left;font-size:14px}.cc-rank>div{display:flex;align-items:center;gap:8px;padding:5px 2px;border-top:1px solid #eef1f3}.cc-rank b{width:30px}.cc-rank span:last-child{margin-left:auto;color:#667;font-size:12px}
 .cc-trophy{font-size:48px}.cc-win{font-size:24px;font-weight:900}.cc-sub{font-size:12px;color:#667;margin-top:4px}
 
 /* ロビー */
@@ -313,7 +314,11 @@ button.lie{background:#b3392f}
       const names = ws.map(s => pn(bySeat(s))).join(' ');
       return '<div class="cc-act"><div class="cc-trophy">🏆</div><div class="cc-win">' +
         (ws.length === 0 ? '引き分け' : ws.length > 1 ? '引き分け：' + names : names + ' の勝ち') + '</div>' +
-        '<div class="cc-sub">' + (st.reason === 'three' ? '3個を渡りきりました' : '着順マスの合計点で決着') + '</div></div>';
+        '<div class="cc-sub">' + (st.reason === 'three' ? '3個を渡りきりました' : st.reason === 'last' ? '最後まで残りました（ほかは全員脱落）' : '着順マスの合計点で決着') + '</div>' +
+        '<div class="cc-rank">' + (st.ranking || []).map((s, i) => {
+          const p = bySeat(s);
+          return p ? '<div><b>' + (i + 1) + '位</b>' + pn(p) + '<span>' + ((p.falls || 0) >= 3 ? '脱落' : score(p) + '点') + '</span></div>' : '';
+        }).join('') + '</div></div>';
     }
     if (room.status === 'paused') {
       const v = st.resume_votes || {};
