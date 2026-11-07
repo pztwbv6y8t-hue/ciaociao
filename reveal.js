@@ -57,8 +57,8 @@
     T(() => { cw.innerHTML = ''; slot.innerHTML = dieHtml(h.face); cup.classList.add('lift'); }, 3300);
     T(() => {
       const lie = h.face === 'X' || String(h.declared) !== String(h.face);
-      info.innerHTML = nm(r) + 'の宣言「' + h.declared + '」→ 実際は <b>' + (h.face === 'X' ? '×' : h.face) + '</b><br>' +
-        '<b class="' + (lie ? 'lie' : 'truth') + '">' + (h.accused ? (lie ? '嘘でした！' : '本当でした！') : (lie ? '嘘でした（見逃し）' : '本当でした')) + '</b>';
+      info.innerHTML = nm(r) + 'の宣言「' + h.declared + '」→ 本当は<b>' + (h.face === 'X' ? '×' : h.face) + '</b><br>' +
+        '<b class="' + (lie ? 'lie' : 'truth') + '">' + (h.accused ? (lie ? '嘘！' : '本当！') : (lie ? '嘘（見逃し）' : '本当')) + '</b>';
       hint.textContent = 'タップで閉じる';
       done = true;
     }, 4300);
